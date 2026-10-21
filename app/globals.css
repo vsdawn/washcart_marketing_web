@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* Used from inline styles (autoplay progress bars), so it must live here: Tailwind only emits keyframes for animate-* classes it finds. */
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.animate-blob {
+  /* organic shape without animating border-radius (which forced a full repaint + re-blur each frame) */
+  border-radius: 42% 58% 62% 38% / 45% 42% 58% 55%;
+  will-change: transform;
+}
+
+/* Phones: the big blurred background glows are costly to animate, so keep them still there. */
+@media (max-width: 767px) {
+  .animate-blob {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .process-progress {
+    animation: none !important;
+  }
+}
+
+.svg-origin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
